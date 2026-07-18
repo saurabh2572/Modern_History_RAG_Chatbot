@@ -30,46 +30,6 @@ This project implements a Retrieval-Augmented Generation (RAG) chatbot using **L
 
 ---
 
-## Project Structure
-
-```bash
-RAG_Chatbot/
-├── graph.py              # LangGraph workflow & nodes
-├── llm.py                # HuggingFaceLLM wrapper (invoke, generate, cache)
-├── retriever.py          # Retriever with re-ranker for knowledge base context
-├── schema.py             # GraphState & Pydantic models for structured outputs
-├── prompts.py            # QUERY_REPHRASE_PROMPT, INPUT_GUARDRAIL_PROMPT, ANSWER_PROMPT
-├── frontend.py           # Streamlit app entry point
-├── config.yaml           # LLM and app configuration
-├── logs/                 # Error logs
-├── cache/                # LangChain & custom cache files
-├── .env                  # Environment variables (HF_TOKEN, etc.)
-└── README.md             # Project documentation
-```
-
----
-
-## Requirements
-
-Install dependencies (simplify or expand as needed):
-
-```bash
-pip install \
-  langchain \
-  langgraph \
-  langsmith \
-  streamlit \
-  pydantic \
-  python-dotenv \
-  langchain-community \
-  huggingface_hub \
-  yaml
-```
-
-You may need additional packages depending on your retriever (e.g., FAISS, sentence-transformers, etc.). [web:51][web:56]
-
----
-
 ## Configuration
 
 ### 1. Environment Variables
@@ -78,6 +38,7 @@ Create a `.env` file in the project root:
 
 ```env
 HF_TOKEN=your_huggingface_token_here
+LANGCHAIN_API_KEY= your_langsmith_api_key
 ```
 
 And load it in Python:
@@ -142,7 +103,7 @@ Conditional edges orchestrate control flow:
   - `capability` → `capability_reply` → `END`
   - `jailbreak` → `jailbreak_reply` → `END`
 
-This ensures repeated questions bypass the full RAG pipeline and are served from cache. [web:49][web:52]
+This ensures repeated questions bypass the full RAG pipeline and are served from cache. 
 
 ---
 
@@ -158,65 +119,3 @@ This ensures repeated questions bypass the full RAG pipeline and are served from
 When used with `PydanticOutputParser`, the prompts enforce strict JSON output, which is then parsed into Pydantic models. [web:43][web:47]
 
 ---
-
-## Streamlit Frontend
-
-`frontend.py` wires the graph into a simple chat UI:
-
-```python
-import streamlit as st
-from graph import graph  # compiled LangGraph
-
-st.title("📚 RAG Chatbot (Modern Indian History)")
-
-if "conversation" not in st.session_state:
-    st.session_state.conversation = []
-
-user_input = st.chat_input("Ask a question about Modern Indian History...")
-
-if user_input:
-    st.session_state.conversation.append({"role": "user", "content": user_input})
-
-    with st.spinner("Thinking..."):
-        # Convert stored conversation to LangChain messages here
-        messages = ...  # build list of BaseMessage objects
-        result = graph.invoke({"messages": messages})
-
-    st.session_state.conversation.append({"role": "assistant", "content": result["answer"]})
-
-for msg in st.session_state.conversation:
-    if msg["role"] == "user":
-        st.chat_message("user").markdown(msg["content"])
-    else:
-        st.chat_message("assistant").markdown(msg["content"])
-```
-
-Run the app:
-
-```bash
-streamlit run frontend.py
-```
-
-
-
-Paste `mermaid_code` into https://mermaid.live to see a graphical view of nodes and edges. [web:26][web:27][web:32]
-
----
-
-## Troubleshooting
-
-### 1. Cache not short‑circuiting
-
-- Ensure `cache_hit` and `cached_answer` are declared in `GraphState`.
-- Verify `cache_router` returns `"cache_hit"` / `"cache_miss"` and matches `add_conditional_edges` keys.
-- Use `draw_ascii()` / `draw_mermaid()` to confirm `cache_lookup` branch wiring.
-
-
-
----
-
----
-
-## License
-
-Add your preferred license here (MIT, Apache‑2.0, etc.).
