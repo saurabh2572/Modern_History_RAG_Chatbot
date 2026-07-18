@@ -6,7 +6,7 @@ import os
 
 load_dotenv()
 conversation = [
-    HumanMessage(content="Who won Fifa 2022?"),
+    HumanMessage(content="Compare Mahatma Gandhi's philosophy with Ambedkar's views on caste, untouchability and social reform."),
 ]
 
 
