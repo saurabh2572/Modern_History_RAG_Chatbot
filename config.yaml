@@ -1,0 +1,18 @@
+PATH:
+  RAW_DATA_DIR: ./data/raw/
+  CHUNKED_DATA: ./data/processed/doc_chunks.json
+  VECTOR_EMBEDDING: ./data/processed/embeddings.json
+  FAISS_VECTOR_STORE: ./data/processed/faiss_vector_db
+  EVALUATION_DATASET: ./data/evaluation/ragas_evaluation_dataset.csv
+
+RETRIEVAR_CONFIG:
+  RETRIEVAL_TOP_K: 20
+  RERANK_TOP_K: 5
+
+LLM_CONFIG:
+  MODEL: openai/gpt-oss-20b
+  TEMPERATURE: 0.0
+
+LLM_AS_JUDGE_CONFIG:
+  MODEL: openai/gpt-oss-120b
+  TEMPERATURE: 0.0

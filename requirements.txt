@@ -1,0 +1,14 @@
+langchain 
+langchain-text-splitters
+langchain_openai
+dotenv
+torchvision
+sentence_transformers
+"faiss-cpu"
+langchain_community
+"langchain-ollama"
+"langchain-groq"
+streamlit
+langgraph
+PyPDF2
+langsmith
