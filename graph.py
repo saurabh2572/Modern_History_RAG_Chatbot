@@ -251,7 +251,7 @@ class RAGWorkflow:
     def generate_answer(self, state: GraphState) -> dict:
         print(">>> generate_answer node executed (RAG path)")
 
-        question = state["messages"][-1].content
+        question = state["rephrased_query"]
 
         prompt = ANSWER_PROMPT.format(
             context=state["context"],
