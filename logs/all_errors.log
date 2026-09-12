@@ -3725,3 +3725,11 @@ Traceback (most recent call last):
   File "C:\Users\SAURABH\OneDrive\Documents\Modern_History_RAG_Chatbot\.venv\Lib\site-packages\httpx\_client.py", line 901, in send
     raise RuntimeError("Cannot send a request, as the client has been closed.")
 RuntimeError: Cannot send a request, as the client has been closed.
+2026-09-12 22:40:08,094 - ERROR - Error initializing RAG workflow
+Traceback (most recent call last):
+  File "C:\Users\SAURABH\OneDrive\Documents\Modern_History_RAG_Chatbot\graph.py", line 71, in __init__
+    self.llm = HuggingFaceLLM(
+               ^^^^^^^^^^^^^^^
+  File "C:\Users\SAURABH\OneDrive\Documents\Modern_History_RAG_Chatbot\llm.py", line 29, in __init__
+    raise ValueError(
+ValueError: HF_TOKEN is missing from .env

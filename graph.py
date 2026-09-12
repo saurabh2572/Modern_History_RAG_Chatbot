@@ -249,28 +249,33 @@ class RAGWorkflow:
     # ------------------------------------------------------
     @traceable(name="Answer Generation")
     def generate_answer(self, state: GraphState) -> dict:
+
         print(">>> generate_answer node executed (RAG path)")
 
-        question = state["rephrased_query"]
+        rephrased_question = state["rephrased_query"]
 
         prompt = ANSWER_PROMPT.format(
             context=state["context"],
-            question=question,
+            question=rephrased_question,
             format_instructions=self.answer_parser.get_format_instructions(),
         )
 
-        # Generate answer from LLM
         answer_text = self.llm.generate(prompt)
+
         parsed_answer = self.answer_parser.parse(answer_text)
+
         final_answer = parsed_answer.answer
 
-        # Update custom cache with the final answer
+        # Store ORIGINAL user question in semantic cache
+        original_question = state["messages"][-1].content
+
         self.llm.update_cache(
-            question=question,
+            question=original_question,
             answer=final_answer,
         )
 
         print(">>> cache updated with new answer (RAG path)")
+
         return {
             "answer": final_answer
         }

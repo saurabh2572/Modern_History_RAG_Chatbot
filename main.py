@@ -6,7 +6,7 @@ import os
 
 load_dotenv()
 conversation = [
-    HumanMessage(content="Compare Mahatma Gandhi's philosophy with Ambedkar's views on caste, untouchability and social reform."),
+    HumanMessage(content="Compare Mahatma Gandhi's and Ambedkar's Philosophy."),
 ]
 
 
